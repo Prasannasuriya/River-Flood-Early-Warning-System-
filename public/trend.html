@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Trend - River Flood Early Warning System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand">
+                <div class="brand-icon"><i class="fas fa-water"></i></div>
+                <span>FLOOD GUARD <span class="brand-badge">GOV EWS</span></span>
+            </a>
+
+            <button class="mobile-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-links">
+                <li class="nav-item"><a href="index.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li class="nav-item"><a href="readings.html"><i class="fas fa-table"></i> Reading List</a></li>
+                <li class="nav-item"><a href="add-reading.html"><i class="fas fa-plus-circle"></i> Add Reading</a></li>
+                <li class="nav-item"><a href="trend.html" class="active"><i class="fas fa-arrow-trend-up"></i> Water Trend</a></li>
+                <li class="nav-item"><a href="alerts.html"><i class="fas fa-bell"></i> Alerts</a></li>
+            </ul>
+
+            <div class="user-profile" id="nav-user-container"></div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="main-container">
+
+        <!-- Header -->
+        <header class="header-banner">
+            <div class="page-title">
+                <h1><i class="fas fa-chart-line" style="color: var(--accent-blue);"></i> Water Level Trend &amp; Analytics</h1>
+                <p>Hydrological trend line analysis, historical level bounds, and statistical summary.</p>
+            </div>
+        </header>
+
+        <!-- Summary Metrics Cards Grid -->
+        <section class="metrics-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <!-- Highest Level -->
+            <div class="glass-card stat-card">
+                <div class="stat-icon danger"><i class="fas fa-arrow-up-long"></i></div>
+                <div class="stat-info">
+                    <h3>Highest Water Level</h3>
+                    <div class="stat-value" id="stat-highest" style="color: var(--status-danger);">-- m</div>
+                    <div class="stat-subtext">Peak Flood Surge Recorded</div>
+                </div>
+            </div>
+
+            <!-- Lowest Level -->
+            <div class="glass-card stat-card">
+                <div class="stat-icon safe"><i class="fas fa-arrow-down-long"></i></div>
+                <div class="stat-info">
+                    <h3>Lowest Water Level</h3>
+                    <div class="stat-value" id="stat-lowest" style="color: var(--status-safe);">-- m</div>
+                    <div class="stat-subtext">Baseline Low Flow</div>
+                </div>
+            </div>
+
+            <!-- Average Level -->
+            <div class="glass-card stat-card">
+                <div class="stat-icon level"><i class="fas fa-calculator"></i></div>
+                <div class="stat-info">
+                    <h3>Average Water Level</h3>
+                    <div class="stat-value" id="stat-average" style="color: var(--accent-blue);">-- m</div>
+                    <div class="stat-subtext">System Mean Level</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Line Graph Container -->
+        <section class="glass-card" style="margin-bottom: 2rem;">
+            <div class="chart-header">
+                <h2><i class="fas fa-wave-square" style="color: var(--accent-blue);"></i> Hydrological Water Level Graph</h2>
+                <span class="badge badge-safe">Line Chart (Meters)</span>
+            </div>
+            <div class="chart-container" style="min-height: 400px;">
+                <canvas id="waterTrendChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Latest Readings Table -->
+        <section class="glass-card">
+            <div class="chart-header">
+                <h2><i class="fas fa-clock-rotate-left" style="color: var(--accent-blue);"></i> Latest Station Telemetry</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Reading ID</th>
+                            <th>Location</th>
+                            <th>Water Level</th>
+                            <th>Status</th>
+                            <th>Recorded Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trend-table-body">
+                        <!-- Loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div>&copy; 2026 River Flood Early Warning System &bull; Trend Analytics</div>
+    </footer>
+
+    <!-- JS Scripts -->
+    <script src="assets/js/toast.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/trend.js"></script>
+</body>
+</html>

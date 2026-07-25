@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - River Flood Early Warning System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand">
+                <div class="brand-icon"><i class="fas fa-water"></i></div>
+                <span>FLOOD GUARD <span class="brand-badge">GOV EWS</span></span>
+            </a>
+
+            <button class="mobile-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-links">
+                <li class="nav-item"><a href="index.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li class="nav-item"><a href="readings.html"><i class="fas fa-table"></i> Reading List</a></li>
+                <li class="nav-item"><a href="add-reading.html"><i class="fas fa-plus-circle"></i> Add Reading</a></li>
+                <li class="nav-item"><a href="trend.html"><i class="fas fa-arrow-trend-up"></i> Water Trend</a></li>
+                <li class="nav-item"><a href="alerts.html"><i class="fas fa-bell"></i> Alerts</a></li>
+            </ul>
+
+            <div class="user-profile" id="nav-user-container">
+                <!-- Injected via auth.js -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+
+        <!-- Header Banner -->
+        <header class="header-banner">
+            <div class="page-title">
+                <h1><i class="fas fa-shield-halved" style="color: var(--accent-blue);"></i> River Flood Early Warning System</h1>
+                <p>Real-time telemetry, water level monitoring, and automated emergency flood threat response.</p>
+            </div>
+            <div class="header-actions">
+                <div class="live-indicator">
+                    <span class="pulse-dot"></span> LIVE TELEMETRY STREAM
+                </div>
+                <a href="add-reading.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Record Water Level
+                </a>
+            </div>
+        </header>
+
+        <!-- Summary Metric Cards Grid -->
+        <section class="metrics-grid">
+            <!-- Total Stations -->
+            <div class="glass-card stat-card">
+                <div class="stat-icon stations"><i class="fas fa-broadcast-tower"></i></div>
+                <div class="stat-info">
+                    <h3>Total Stations</h3>
+                    <div class="stat-value" id="stat-stations">--</div>
+                    <div class="stat-subtext">Active Monitoring Units</div>
+                </div>
+            </div>
+
+            <!-- Safe Locations -->
+            <div class="glass-card stat-card">
+                <div class="stat-icon safe"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <h3>Safe Locations</h3>
+                    <div class="stat-value" id="stat-safe">--</div>
+                    <div class="stat-subtext">Water Level 0 - 2.5m</div>
+                </div>
+            </div>
+
+            <!-- Warning Locations -->
+            <div class="glass-card stat-card">
+                <div class="stat-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-info">
+                    <h3>Warning Locations</h3>
+                    <div class="stat-value" id="stat-warning">--</div>
+                    <div class="stat-subtext">Water Level 2.5 - 4.5m</div>
+                </div>
+            </div>
+
+            <!-- Danger Locations -->
+            <div class="glass-card stat-card">
+                <div class="stat-icon danger"><i class="fas fa-biohazard"></i></div>
+                <div class="stat-info">
+                    <h3>Danger Locations</h3>
+                    <div class="stat-value" id="stat-danger">--</div>
+                    <div class="stat-subtext">Water Level > 4.5m</div>
+                </div>
+            </div>
+
+            <!-- Latest Water Level -->
+            <div class="glass-card stat-card">
+                <div class="stat-icon level"><i class="fas fa-ruler-vertical"></i></div>
+                <div class="stat-info">
+                    <h3>Latest Water Level</h3>
+                    <div class="stat-value" id="stat-latest-level">-- m</div>
+                    <div class="stat-subtext" id="stat-latest-location">Station: --</div>
+                </div>
+            </div>
+
+            <!-- Last Updated Time -->
+            <div class="glass-card stat-card">
+                <div class="stat-icon time"><i class="fas fa-clock"></i></div>
+                <div class="stat-info">
+                    <h3>Last Updated</h3>
+                    <div class="stat-value" id="stat-updated" style="font-size: 1.1rem;">--</div>
+                    <div class="stat-subtext">Latest Telemetry Pulse</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visual Analytics Grid -->
+        <section class="charts-grid">
+            <!-- Line Chart: Water Level Trend -->
+            <div class="glass-card">
+                <div class="chart-header">
+                    <h2><i class="fas fa-chart-line" style="color: var(--accent-blue);"></i> Water Level Trend</h2>
+                    <span class="badge badge-safe">Chronological Telemetry</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="trendLineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Pie Chart: Status Distribution -->
+            <div class="glass-card">
+                <div class="chart-header">
+                    <h2><i class="fas fa-chart-pie" style="color: var(--accent-blue);"></i> Status Distribution</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="statusPieChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity Section -->
+        <section class="glass-card">
+            <div class="chart-header">
+                <h2><i class="fas fa-history" style="color: var(--accent-blue);"></i> Recent Telemetry Readings</h2>
+                <a href="readings.html" class="btn btn-secondary btn-sm">View All Records <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Reading ID</th>
+                            <th>Location</th>
+                            <th>Water Level</th>
+                            <th>Status</th>
+                            <th>Recorded Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-readings-body">
+                        <!-- Rendered dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="nav-container" style="justify-content: center; flex-direction: column; gap: 0.4rem;">
+            <div>&copy; 2026 Emergency Management Operations Center - River Flood Early Warning System</div>
+            <div style="font-size: 0.78rem;">Powered by Node.js, Express, SQLite &amp; Chart.js</div>
+        </div>
+    </footer>
+
+    <!-- JS Scripts -->
+    <script src="assets/js/toast.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

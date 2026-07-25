@@ -1,0 +1,26 @@
+{
+  "name": "river-flood-warning-system",
+  "version": "1.0.0",
+  "description": "Government Emergency River Flood Early Warning & Water Level Monitoring System",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "node --watch server/app.js"
+  },
+  "keywords": [
+    "flood-warning",
+    "emergency-system",
+    "water-level-monitoring",
+    "sqlite",
+    "express"
+  ],
+  "author": "Government Emergency Management Systems",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "sql.js": "^1.14.1",
+    "sqlite3": "^5.1.7"
+  }
+}
