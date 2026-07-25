@@ -1,14 +1,15 @@
 /* ==========================================================================
-   RIVER FLOOD EARLY WARNING SYSTEM - MODERN GLASSMORPHISM DARK THEME UI
+   FLOOD GUARD EWS - Modern Dark Glassmorphism Design System
+   Designed & Developed by Prasannasuriya
    ========================================================================== */
 
 :root {
-    --bg-primary: #0b0f19;
+    --bg-primary: #0a0e17;
     --bg-secondary: #111827;
     --card-bg: rgba(17, 24, 39, 0.75);
     --card-hover-bg: rgba(31, 41, 55, 0.85);
     --card-border: rgba(255, 255, 255, 0.08);
-    --card-border-glow: rgba(56, 189, 248, 0.3);
+    --card-border-hover: rgba(56, 189, 248, 0.35);
     
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
@@ -19,23 +20,23 @@
     --accent-blue-glow: rgba(56, 189, 248, 0.25);
     --nav-active: #2563eb;
     
-    --status-safe: #22c55e;
-    --status-safe-bg: rgba(34, 197, 94, 0.15);
-    --status-safe-border: rgba(34, 197, 94, 0.3);
+    --status-safe: #10b981;
+    --status-safe-bg: rgba(16, 185, 129, 0.12);
+    --status-safe-border: rgba(16, 185, 129, 0.3);
     
     --status-warning: #f59e0b;
-    --status-warning-bg: rgba(245, 158, 11, 0.15);
+    --status-warning-bg: rgba(245, 158, 11, 0.12);
     --status-warning-border: rgba(245, 158, 11, 0.3);
     
     --status-danger: #ef4444;
-    --status-danger-bg: rgba(239, 68, 68, 0.2);
+    --status-danger-bg: rgba(239, 68, 68, 0.15);
     --status-danger-border: rgba(239, 68, 68, 0.4);
     
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
-    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    --shadow-glass: 0 10px 30px rgba(0, 0, 0, 0.45);
     --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -54,8 +55,8 @@ body {
     flex-direction: column;
     overflow-x: hidden;
     background-image: 
-        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.06) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(37, 99, 235, 0.06) 0%, transparent 40%);
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.05) 0%, transparent 45%);
 }
 
 a {
@@ -63,12 +64,9 @@ a {
     text-decoration: none;
 }
 
-/* ==========================================================================
-   NAVIGATION BAR
-   ========================================================================== */
-
+/* Navbar */
 .navbar {
-    background: rgba(11, 15, 25, 0.85);
+    background: rgba(10, 14, 23, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--card-border);
@@ -106,14 +104,14 @@ a {
     justify-content: center;
     font-size: 1.2rem;
     color: #ffffff;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.35);
 }
 
 .brand-badge {
     font-size: 0.65rem;
     background: rgba(56, 189, 248, 0.15);
     color: var(--accent-blue);
-    padding: 2px 8px;
+    padding: 3px 8px;
     border-radius: 20px;
     border: 1px solid rgba(56, 189, 248, 0.3);
     text-transform: uppercase;
@@ -147,8 +145,8 @@ a {
 
 .nav-item a.active {
     color: #ffffff;
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.8), rgba(2, 132, 199, 0.8));
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.85), rgba(2, 132, 199, 0.85));
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
 }
 
 .user-profile {
@@ -214,10 +212,7 @@ a {
     cursor: pointer;
 }
 
-/* ==========================================================================
-   MAIN LAYOUT & CARDS
-   ========================================================================== */
-
+/* Layout */
 .main-container {
     max-width: 1400px;
     margin: 0 auto;
@@ -232,7 +227,8 @@ a {
     align-items: center;
     margin-bottom: 2rem;
     background: var(--card-bg);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--card-border);
     padding: 1.5rem 2rem;
     border-radius: var(--radius-lg);
@@ -278,14 +274,14 @@ a {
     height: 8px;
     background-color: var(--status-safe);
     border-radius: 50%;
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
     animation: pulse 1.8s infinite;
 }
 
 @keyframes pulse {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
 /* Glass Card */
@@ -303,10 +299,11 @@ a {
 }
 
 .glass-card:hover {
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--card-border-hover);
+    transform: translateY(-2px);
 }
 
-/* Summary Grid Cards */
+/* Metrics Grid */
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -395,7 +392,7 @@ a {
     min-height: 320px;
 }
 
-/* Buttons & Inputs */
+/* Buttons & Controls */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -450,7 +447,7 @@ a {
 .form-control, .form-select {
     width: 100%;
     padding: 0.75rem 1rem;
-    background: rgba(15, 23, 42, 0.6);
+    background: rgba(10, 14, 23, 0.65);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-sm);
     color: var(--text-primary);
@@ -476,7 +473,7 @@ a {
     margin-bottom: 0.4rem;
 }
 
-/* Table Styling */
+/* Tables */
 .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -491,7 +488,7 @@ a {
 }
 
 .custom-table th {
-    background: rgba(15, 23, 42, 0.8);
+    background: rgba(10, 14, 23, 0.85);
     color: var(--text-secondary);
     font-size: 0.82rem;
     font-weight: 600;
@@ -511,7 +508,7 @@ a {
 }
 
 .custom-table tbody tr:hover td {
-    background: rgba(31, 41, 55, 0.6);
+    background: rgba(31, 41, 55, 0.65);
 }
 
 /* Badges */
@@ -558,8 +555,9 @@ a {
     border: 1px solid transparent;
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
     box-shadow: var(--shadow-glass);
+    transition: var(--transition);
 }
 
 .alert-card.warning-card {
@@ -617,7 +615,7 @@ a {
 .warning-card .alert-level-display { color: var(--status-warning); }
 .danger-card .alert-level-display { color: var(--status-danger); }
 
-/* Empty & Loading States */
+/* States */
 .state-container {
     text-align: center;
     padding: 3rem 1.5rem;
@@ -692,11 +690,11 @@ footer {
     text-align: center;
     font-size: 0.85rem;
     color: var(--text-muted);
-    background: rgba(11, 15, 25, 0.9);
+    background: rgba(10, 14, 23, 0.9);
     margin-top: auto;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
     .navbar { padding: 0.85rem 1rem; }
     .nav-links {
