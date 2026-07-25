@@ -1,78 +1,103 @@
-# River Flood Early Warning System (Tamil Nadu & Surrounding Regions)
+# River Flood Early Warning System
 
-A full-stack, production-quality emergency monitoring web application designed for government flood response, real-time river telemetry monitoring across **Tamil Nadu and surrounding river basins** (Cauvery, Vaigai, Thamirabarani, Bhavani, Palar, Thenpennai, Kollidam, Noyyal, Siruvani, Gundar), and threshold-based automated threat alerts.
+[![Developer](https://img.shields.io/badge/Developer-Prasannasuriya-38bdf8?style=for-the-badge)](https://github.com/Prasannasuriya)
+[![Node.js](https://img.shields.io/badge/Node.js-v18%2B-green?style=for-the-badge&logo=node.js)](https://nodejs.org)
+[![Express.js](https://img.shields.io/badge/Express.js-4.21-blue?style=for-the-badge&logo=express)](https://expressjs.com)
+[![SQLite](https://img.shields.io/badge/SQLite3-Database-003B57?style=for-the-badge&logo=sqlite)](https://www.sqlite.org)
 
-![System Preview Placeholder](https://via.placeholder.com/1200x600/0f172a/38bdf8?text=Tamil+Nadu+River+Flood+Early+Warning+System)
+A modern, responsive full-stack web application engineered for real-time river water level telemetry monitoring, hydrological analytics, and automated flood threat alerting across key river basins in **Tamil Nadu and surrounding regions**.
 
----
-
-## 🌟 Key Features
-
-1. **Admin Authentication**:
-   - Secure control panel (`Username: admin`, `Password: admin123`).
-2. **Interactive Executive Dashboard**:
-   - **6 Metric Summary Cards**: Total Monitoring Stations, Safe Locations, Warning Locations, Danger Locations, Latest Water Level, Last Updated Timestamp.
-   - **Chart.js Visualizations**: Water Level Trend (Line Chart) and Status Distribution (Doughnut/Pie Chart).
-   - **Live Telemetry Stream**.
-3. **Add Water Level Telemetry**:
-   - Form fields: Reading ID, Device ID, Location, Water Level (meters), Recorded Time, Telemetry Notes.
-   - **Automated Threshold Calculation**:
-     - 🟢 **Safe**: `0.0m - 2.5m`
-     - 🟠 **Warning**: `2.5m - 4.5m`
-     - 🔴 **Danger**: Above `4.5m`
-   - Real-time client-side validation & live status meter preview.
-4. **Reading List Database Table**:
-   - Instant search by Tamil Nadu river location names (e.g. *Cauvery*, *Vaigai*, *Thamirabarani*) or telemetry device ID.
-   - Dynamic status filter (`All`, `Safe`, `Warning`, `Danger`).
-   - Multi-option sorting (latest, oldest, water level high-to-low, low-to-high).
-   - Live record counter badge.
-   - Full CRUD actions with edit modal and delete confirmation.
-5. **Water Trend & Hydrological Analytics**:
-   - Interactive line graph displaying chronological water level trends.
-   - Summary statistics cards: **Highest Level**, **Lowest Level**, **Average Level**.
-6. **Active Alerts Dashboard**:
-   - Dynamically scans Tamil Nadu monitoring stations for active flood risks.
-   - 🟡 **Yellow Alert Cards**: Automatically generated for `Warning` status.
-   - 🔴 **Red Emergency Flash Cards**: Automatically generated for `Danger` status with pulsing glow animations.
-7. **SQLite Database & 40 Tamil Nadu Seed Records**:
-   - Automatically initializes `flood_system.db` and seeds 40 realistic records across Tamil Nadu river basins.
-   - Includes required edge case specifications:
-     - 2 similar location names (`Cauvery River - Mettur Dam North` & `Cauvery River - Mettur Dam South`)
-     - 1 missing optional value (`notes` NULL for `RD-1015`)
-     - 1 unrelated record (`System Test Rig 99`)
+![System Overview](https://via.placeholder.com/1200x600/0f172a/38bdf8?text=River+Flood+Early+Warning+System+-+Built+by+Prasannasuriya)
 
 ---
 
-## 🌊 Monitored River Basins
+## 🌟 Features Overview
 
-- **Cauvery River** (Mettur Dam North & South, Delta Sector)
-- **Vaigai River** (Madurai Bridge & Causeway)
-- **Thamirabarani River** (Tirunelveli Check Dam & Papanasam)
-- **Bhavani River** (Bhavanisagar Reservoir)
-- **Palar River** (Kanchipuram Intake)
-- **Thenpennai River** (Krishnagiri Dam)
-- **Kollidam River** (Chidambaram Barrage)
-- **Amaravathi River** (Karur Anicut)
-- **Noyyal River** (Tiruppur Collectorate Bridge)
-- **Siruvani River** (Coimbatore Supply Intake)
-- **Gundar River** (Virudhunagar Basin)
+- 📊 **Executive Dashboard**: Live summary metrics (Total Stations, Safe, Warning, Danger counts, Latest Level, Last Updated Time) alongside interactive **Chart.js** Line and Doughnut charts.
+- 🌊 **Tamil Nadu River Telemetry**: Pre-seeded with 40 realistic telemetry records across river basins including *Cauvery*, *Vaigai*, *Thamirabarani*, *Bhavani*, *Palar*, *Thenpennai*, *Kollidam*, *Amaravathi*, *Noyyal*, *Siruvani*, and *Gundar*.
+- ⚡ **Automated Status Threshold Evaluation**:
+  - 🟢 **Safe**: `0.0m - 2.5m`
+  - 🟠 **Warning**: `2.5m - 4.5m`
+  - 🔴 **Danger**: Exceeds `4.5m`
+- ➕ **Add Telemetry Reading**: Form with real-time dynamic status preview meter and input validation before persistence.
+- 📋 **Interactive Database Table**: Real-time location search, status filters (`All`, `Safe`, `Warning`, `Danger`), multi-parameter sorting, and full CRUD capability (Edit modal & Delete confirmation).
+- 📈 **Hydrological Trend Analytics**: High-resolution water level trend graph with automated summary metrics (**Highest Level**, **Lowest Level**, **Average Level**).
+- 🚨 **Dynamic Alert Center**: Automatically generates **Yellow Warning Cards** for warning levels and **Red Emergency Flash Cards** for critical danger levels.
+- 🔐 **Admin Portal**: Authentication interface for system management (`admin` / `admin123`).
 
 ---
 
-## 📁 Project Folder Structure
+## 🛠️ Tech Stack
 
+- **Frontend**: HTML5, Vanilla CSS3 (Custom Glassmorphism UI, CSS Tokens, Micro-animations), Vanilla JavaScript (ES6+ Modular Scripts).
+- **Libraries**: Chart.js (Interactive Charts), Font Awesome 6.4 (Iconography).
+- **Backend**: Node.js, Express.js, CORS, Dotenv.
+- **Database**: SQLite database engine (`flood_system.db`) with schema migrations and seed scripts.
+
+---
+
+## 🚀 Quick Start & Installation
+
+### Prerequisites
+
+Make sure you have [Node.js](https://nodejs.org/) (v18 or higher) and `npm` installed.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Prasannasuriya/River-Flood-Early-Warning-System-.git
+cd River-Flood-Early-Warning-System-
 ```
-D:\Project\river-flood-warning-system\
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the Server
+
+```bash
+npm start
+```
+
+For development mode with auto-reload:
+
+```bash
+npm run dev
+```
+
+### 4. Open Application
+
+Open your browser and navigate to:
+
+```text
+http://localhost:5000
+```
+
+---
+
+## 🔑 Admin Credentials
+
+- **Username**: `admin`
+- **Password**: `admin123`
+
+---
+
+## 📁 Project Architecture
+
+```text
+River-Flood-Early-Warning-System/
 ├── database/
-│   ├── schema.sql           # SQLite table schema & performance indexes
-│   ├── seed.sql             # SQL seed dataset with 40 Tamil Nadu river records
-│   ├── db.js                # Database initialization & WASM/JS persistence engine
-│   └── flood_system.db      # Generated SQLite database file
+│   ├── schema.sql           # Database schema & index definitions
+│   ├── seed.sql             # 40 realistic seed records for Tamil Nadu rivers
+│   ├── db.js                # SQLite connection, auto-migration & persistence
+│   └── flood_system.db      # SQLite database file
 ├── server/
 │   ├── controllers/
-│   │   ├── authController.js      # Admin login authentication logic
-│   │   ├── readingController.js   # CRUD operations & threshold calculations
-│   │   └── dashboardController.js # Aggregated statistics & chart datasets
+│   │   ├── authController.js      # Admin authentication handler
+│   │   ├── readingController.js   # Telemetry CRUD & threshold calculations
+│   │   └── dashboardController.js # Aggregated statistics & chart data
 │   ├── routes/
 │   │   ├── authRoutes.js         # /api/auth routes
 │   │   ├── readingRoutes.js      # /api/readings routes
@@ -80,19 +105,19 @@ D:\Project\river-flood-warning-system\
 │   ├── middleware/
 │   │   └── errorHandler.js       # Centralized error handler & 404 router
 │   └── app.js                    # Express application entrypoint
-├── public/                       # Served static frontend directory
+├── public/                       # Static frontend client assets
 │   ├── assets/
 │   │   ├── css/
-│   │   │   └── styles.css        # Glassmorphism dark theme & design system
+│   │   │   └── styles.css        # Glassmorphism design tokens & styles
 │   │   └── js/
-│   │       ├── api.js            # Frontend REST API client
-│   │       ├── auth.js           # Admin session & navbar state management
-│   │       ├── toast.js          # Success/Warning/Error notifications
-│   │       ├── dashboard.js      # Dashboard charts & metrics logic
-│   │       ├── readings.js       # Reading list table, search, filter & modal
-│   │       ├── add-reading.js    # Form validation & live threshold preview
+│   │       ├── api.js            # REST API client module
+│   │       ├── auth.js           # Admin session & navigation manager
+│   │       ├── toast.js          # Toast notification alerts
+│   │       ├── dashboard.js      # Dashboard visual analytics controller
+│   │       ├── readings.js       # Readings data table, search & filter
+│   │       ├── add-reading.js    # Form validation & live preview meter
 │   │       ├── trend.js          # Hydrological line graph & statistics
-│   │       └── alerts.js         # Dynamic yellow/red alert cards generator
+│   │       └── alerts.js         # Dynamic warning & emergency cards engine
 │   ├── index.html                # Executive Dashboard view
 │   ├── login.html                # Admin Login view
 │   ├── add-reading.html          # Add Water Level view
@@ -105,46 +130,26 @@ D:\Project\river-flood-warning-system\
 
 ---
 
-## 🛠️ Technology Stack
+## 📡 REST API Reference
 
-- **Frontend**: HTML5, Vanilla CSS3 (Design Tokens, Glassmorphism, Animations), Vanilla JavaScript (ES6+).
-- **Icons & Charts**: Font Awesome 6.4 (CDN), Chart.js (CDN).
-- **Backend API**: Node.js, Express.js, CORS, Dotenv.
-- **Database**: SQLite3 engine with file persistence (`flood_system.db`).
-
----
-
-## ⚡ Installation & Getting Started
-
-```bash
-# 1. Navigate to project directory
-cd D:\Project\river-flood-warning-system
-
-# 2. Install Node.js dependencies
-npm install
-
-# 3. Launch Express Server
-npm start
-```
-Open **`http://localhost:5000`** in your browser.
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| **POST** | `/api/auth/login` | Authenticate admin user (`admin` / `admin123`) |
+| **GET** | `/api/dashboard` | Retrieve summary statistics, status counts & chart datasets |
+| **GET** | `/api/readings` | Fetch readings list (supports `search`, `status`, `sort` params) |
+| **POST** | `/api/readings` | Create new telemetry reading & auto-evaluate threshold status |
+| **PUT** | `/api/readings/:id` | Update telemetry reading & re-evaluate status |
+| **DELETE** | `/api/readings/:id` | Delete telemetry record by ID |
 
 ---
 
-## 🔑 Admin Credentials
+## 👤 Author
 
-- **Username**: `admin`
-- **Password**: `admin123`
+Developed by **Prasannasuriya**  
+- GitHub: [@Prasannasuriya](https://github.com/Prasannasuriya)
 
 ---
 
-## 🐙 GitHub Push Instructions
+## 📄 License
 
-```bash
-cd D:\Project\river-flood-warning-system
-git init
-git add .
-git commit -m "feat: updated river flood warning system with Tamil Nadu rivers and documentation"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/river-flood-warning-system.git
-git push -u origin main
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

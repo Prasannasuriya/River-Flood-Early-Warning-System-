@@ -1,4 +1,4 @@
-// Auth Controller - Simple Admin Authentication
+// Auth Controller - Admin Authentication
 const login = (req, res) => {
     try {
         const { username, password } = req.body;
@@ -13,7 +13,7 @@ const login = (req, res) => {
                 message: 'Login successful',
                 user: {
                     username: 'admin',
-                    role: 'Emergency Monitoring Administrator',
+                    role: 'System Administrator',
                     token: 'admin-jwt-session-token-key-2026'
                 }
             });

@@ -20,7 +20,7 @@
         <div class="nav-container">
             <a href="index.html" class="brand">
                 <div class="brand-icon"><i class="fas fa-water"></i></div>
-                <span>FLOOD GUARD <span class="brand-badge">GOV EWS</span></span>
+                <span>FLOOD GUARD <span class="brand-badge">EWS</span></span>
             </a>
 
             <button class="mobile-toggle" aria-label="Toggle navigation">
@@ -46,7 +46,7 @@
         <header class="header-banner">
             <div class="page-title">
                 <h1><i class="fas fa-plus-circle" style="color: var(--accent-blue);"></i> Record Water Level Telemetry</h1>
-                <p>Submit new sensor telemetry reading. System automatically evaluates safety thresholds.</p>
+                <p>Submit new river telemetry reading. System automatically evaluates threshold status.</p>
             </div>
         </header>
 
@@ -69,7 +69,7 @@
 
                 <!-- Location -->
                 <div class="form-group">
-                    <label for="location"><i class="fas fa-map-marker-alt"></i> Station Location *</label>
+                    <label for="location"><i class="fas fa-map-marker-alt"></i> River Station Location *</label>
                     <input type="text" id="location" class="form-control" placeholder="e.g. Cauvery River - Mettur Dam North" required>
                 </div>
 
@@ -90,7 +90,7 @@
                 <!-- Real-time Status Threshold Preview Meter -->
                 <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1.25rem; margin: 1rem 0 1.5rem 0;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">AUTOMATED STATUS EVALUATION PREVIEW</span>
+                        <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">AUTOMATED THRESHOLD PREVIEW</span>
                         <div id="status-preview-badge" class="badge badge-safe">Enter Level</div>
                     </div>
                     <div id="status-preview-desc" style="font-size: 0.85rem; color: var(--text-muted);">
@@ -101,7 +101,7 @@
                 <!-- Optional Notes -->
                 <div class="form-group">
                     <label for="notes"><i class="fas fa-sticky-note"></i> Telemetry Notes (Optional)</label>
-                    <textarea id="notes" class="form-control" rows="3" placeholder="e.g. Heavy rainfall upstream causing rapid level increase..."></textarea>
+                    <textarea id="notes" class="form-control" rows="3" placeholder="e.g. Heavy monsoon inflow upstream causing rapid level rise..."></textarea>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
@@ -115,7 +115,7 @@
 
     <!-- Footer -->
     <footer>
-        <div>&copy; 2026 River Flood Early Warning System &bull; Emergency Monitoring Portal</div>
+        <div>&copy; 2026 River Flood Early Warning System &bull; Designed &amp; Developed by <strong>Prasannasuriya</strong></div>
     </footer>
 
     <!-- JS Scripts -->

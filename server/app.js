@@ -30,7 +30,8 @@ app.use('/api/dashboard', dashboardRoutes);
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'UP',
-        system: 'River Flood Early Warning System API',
+        system: 'River Flood Early Warning System',
+        developer: 'Prasannasuriya',
         timestamp: new Date().toISOString()
     });
 });
@@ -43,9 +44,9 @@ app.use(globalErrorHandler);
 getDb().then(() => {
     app.listen(PORT, () => {
         console.log(`=======================================================`);
-        console.log(` River Flood Early Warning System Backend Server`);
-        console.log(` Running on: http://localhost:${PORT}`);
-        console.log(` Environment: Production Ready`);
+        console.log(` River Flood Early Warning System`);
+        console.log(` Developed by Prasannasuriya`);
+        console.log(` Server running on: http://localhost:${PORT}`);
         console.log(` Database: SQLite (flood_system.db)`);
         console.log(`=======================================================`);
     });
