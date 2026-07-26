@@ -11,6 +11,15 @@ A modern, responsive full-stack web application engineered for real-time river w
 
 ---
 
+## 📹 Application Video Demo
+
+Check out the full working video demonstration of the application in action:
+
+> 🎥 **[Watch Screen Recording Demo](demo-recording.mp4)**  
+> *(Covers live telemetry stream dashboard, real-time input submission, automated threshold evaluation meter, data table search & filtering, water trend line charts, and active yellow/red flood warning cards)*
+
+---
+
 ## 🌟 Features Overview
 
 - 📊 **Executive Dashboard**: Live summary metrics (Total Stations, Safe, Warning, Danger counts, Latest Level, Last Updated Time) alongside interactive **Chart.js** Line and Doughnut charts.
@@ -88,6 +97,7 @@ http://localhost:5000
 
 ```text
 River-Flood-Early-Warning-System/
+├── demo-recording.mp4        # Screen recording video demonstration of working system
 ├── database/
 │   ├── schema.sql           # Database schema & index definitions
 │   ├── seed.sql             # 40 realistic seed records for Tamil Nadu rivers
