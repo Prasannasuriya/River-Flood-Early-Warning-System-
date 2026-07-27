@@ -1,4 +1,4 @@
-// Reading List Page Logic (Search, Filter, Sort, Count, Badges, Edit, Delete)
+// Reading List Page Logic (Search, Filter, Sort, Count, Change 1 Delta & Change 2 Faults)
 let currentReadings = [];
 let editModal = null;
 let currentEditId = null;
@@ -82,15 +82,21 @@ function renderTable(readings) {
         let badgeClass = 'badge-safe';
         if (r.status === 'Warning') badgeClass = 'badge-warning';
         if (r.status === 'Danger') badgeClass = 'badge-danger';
+        if (r.status === 'SENSOR FAULT') badgeClass = 'badge-fault';
 
-        const notesText = r.notes ? escapeHTML(r.notes) : '<span style="color: var(--text-muted); font-style: italic;">None</span>';
+        // Change 1: Internal calculated baseline delta
+        const diff = (parseFloat(r.water_level) - 2.50);
+        const formattedDelta = diff >= 0 ? `+${diff.toFixed(2)}m` : `${diff.toFixed(2)}m`;
 
         return `
             <tr>
                 <td><strong>${escapeHTML(r.reading_id)}</strong></td>
                 <td><code style="color: var(--accent-blue);">${escapeHTML(r.device_id)}</code></td>
                 <td><i class="fas fa-map-marker-alt" style="color: var(--accent-blue); margin-right: 6px;"></i> ${escapeHTML(r.location)}</td>
-                <td><strong style="font-size: 1.05rem;">${r.water_level} m</strong></td>
+                <td>
+                    <strong style="font-size: 1.05rem;">${r.water_level} m</strong>
+                    <span class="delta-tag" title="Change 1: Internal calculated difference from 2.5m safe baseline">Δ ${formattedDelta}</span>
+                </td>
                 <td><span class="badge ${badgeClass}">${r.status}</span></td>
                 <td>${formatDateTime(r.recorded_time)}</td>
                 <td>
@@ -109,7 +115,6 @@ function renderTable(readings) {
 }
 
 function openEditModal(id) {
-
     const item = currentReadings.find(r => r.id === id);
     if (!item) return;
 

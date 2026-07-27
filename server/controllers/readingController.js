@@ -1,12 +1,43 @@
 const { getDb } = require('../../database/db');
 
-// Threshold logic: Safe (0-2.5m), Warning (2.5-4.5m), Danger (>4.5m)
+// Valid Sensor Range for Telemetry: 0.0m to 15.0m
+const MIN_VALID_LEVEL = 0.0;
+const MAX_VALID_LEVEL = 15.0;
+const SAFE_BASELINE = 2.50; // Reference baseline for Change 1 computed delta
+
+// Change 2: Handle broken sensor reading (impossible value out of bounds)
 const calculateStatus = (waterLevel) => {
     const level = parseFloat(waterLevel);
-    if (isNaN(level) || level < 0) return 'Safe';
+    if (isNaN(level)) return 'SENSOR FAULT';
+
+    // Sensor Fault check: values outside real physical gauge range [0.0m - 15.0m]
+    if (level < MIN_VALID_LEVEL || level > MAX_VALID_LEVEL) {
+        return 'SENSOR FAULT';
+    }
+
     if (level <= 2.5) return 'Safe';
     if (level <= 4.5) return 'Warning';
     return 'Danger';
+};
+
+// Change 1: Compute internal baseline delta (difference from 2.50m safe threshold)
+const computeInternalDelta = (waterLevel) => {
+    const level = parseFloat(waterLevel);
+    if (isNaN(level)) return 0;
+    const diff = level - SAFE_BASELINE;
+    return Math.round(diff * 100) / 100;
+};
+
+// Helper to format reading record with computed Change 1 values
+const formatReadingRecord = (r) => {
+    if (!r) return null;
+    const delta = computeInternalDelta(r.water_level);
+    const formattedDelta = delta >= 0 ? `+${delta.toFixed(2)}m` : `${delta.toFixed(2)}m`;
+    return {
+        ...r,
+        computed_delta: delta,
+        formatted_delta: formattedDelta
+    };
 };
 
 // GET /api/readings
@@ -41,7 +72,9 @@ const getReadings = async (req, res) => {
             query += " ORDER BY recorded_time DESC, id DESC";
         }
 
-        const readings = db.all(query, params);
+        const rawReadings = db.all(query, params);
+        const readings = rawReadings.map(formatReadingRecord);
+
         return res.json({
             success: true,
             count: readings.length,
@@ -64,7 +97,7 @@ const getReadingById = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Reading record not found' });
         }
 
-        return res.json({ success: true, data: reading });
+        return res.json({ success: true, data: formatReadingRecord(reading) });
     } catch (err) {
         console.error('Error fetching reading by id:', err);
         return res.status(500).json({ success: false, message: 'Server error retrieving reading' });
@@ -82,8 +115,8 @@ const createReading = async (req, res) => {
         if (!reading_id || String(reading_id).trim() === '') errors.push('Reading ID is required');
         if (!device_id || String(device_id).trim() === '') errors.push('Device ID is required');
         if (!location || String(location).trim() === '') errors.push('Location is required');
-        if (water_level === undefined || water_level === null || isNaN(parseFloat(water_level)) || parseFloat(water_level) < 0) {
-            errors.push('Water Level must be a valid non-negative number');
+        if (water_level === undefined || water_level === null || isNaN(parseFloat(water_level))) {
+            errors.push('Water Level must be a valid numeric value');
         }
         if (!recorded_time || String(recorded_time).trim() === '') errors.push('Recorded Time is required');
 
@@ -99,7 +132,15 @@ const createReading = async (req, res) => {
 
         const numLevel = parseFloat(water_level);
         const status = calculateStatus(numLevel);
-        const cleanNotes = notes && String(notes).trim() !== '' ? String(notes).trim() : null;
+        
+        let cleanNotes = notes && String(notes).trim() !== '' ? String(notes).trim() : null;
+        
+        // Change 2: Append fault warning to notes if sensor is broken/impossible reading
+        if (status === 'SENSOR FAULT') {
+            const faultMsg = `[FAULT: Impossible sensor reading (${numLevel}m outside valid range 0-15m) - Ignored for flood alarm]`;
+            cleanNotes = cleanNotes ? `${cleanNotes} ${faultMsg}` : faultMsg;
+            console.warn(`[SENSOR FAULT DETECTED] Device ${device_id} reported impossible reading: ${numLevel}m. Treated as hardware fault.`);
+        }
 
         db.run(
             `INSERT INTO readings (reading_id, device_id, location, water_level, status, recorded_time, notes)
@@ -111,8 +152,10 @@ const createReading = async (req, res) => {
 
         return res.status(201).json({
             success: true,
-            message: 'Water level reading recorded successfully',
-            data: newReading
+            message: status === 'SENSOR FAULT' 
+                ? 'Impossible sensor reading recorded as SENSOR FAULT (False alarm prevented)'
+                : 'Water level reading recorded successfully',
+            data: formatReadingRecord(newReading)
         });
     } catch (err) {
         console.error('Error creating reading:', err);
@@ -135,8 +178,8 @@ const updateReading = async (req, res) => {
         const errors = [];
         if (!device_id || String(device_id).trim() === '') errors.push('Device ID is required');
         if (!location || String(location).trim() === '') errors.push('Location is required');
-        if (water_level === undefined || water_level === null || isNaN(parseFloat(water_level)) || parseFloat(water_level) < 0) {
-            errors.push('Water Level must be a valid non-negative number');
+        if (water_level === undefined || water_level === null || isNaN(parseFloat(water_level))) {
+            errors.push('Water Level must be a valid numeric value');
         }
         if (!recorded_time || String(recorded_time).trim() === '') errors.push('Recorded Time is required');
 
@@ -146,7 +189,12 @@ const updateReading = async (req, res) => {
 
         const numLevel = parseFloat(water_level);
         const status = calculateStatus(numLevel);
-        const cleanNotes = notes && String(notes).trim() !== '' ? String(notes).trim() : null;
+        let cleanNotes = notes && String(notes).trim() !== '' ? String(notes).trim() : null;
+
+        if (status === 'SENSOR FAULT') {
+            const faultMsg = `[FAULT: Impossible reading (${numLevel}m)]`;
+            cleanNotes = cleanNotes ? `${cleanNotes} ${faultMsg}` : faultMsg;
+        }
 
         db.run(
             `UPDATE readings 
@@ -160,7 +208,7 @@ const updateReading = async (req, res) => {
         return res.json({
             success: true,
             message: 'Reading record updated successfully',
-            data: updated
+            data: formatReadingRecord(updated)
         });
     } catch (err) {
         console.error('Error updating reading:', err);
@@ -197,5 +245,6 @@ module.exports = {
     createReading,
     updateReading,
     deleteReading,
-    calculateStatus
+    calculateStatus,
+    computeInternalDelta
 };

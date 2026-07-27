@@ -23,42 +23,54 @@ const getDashboardData = async (req, res) => {
         let safeLocations = 0;
         let warningLocations = 0;
         let dangerLocations = 0;
+        let faultLocations = 0;
 
         latestPerLocation.forEach(loc => {
             if (loc.status === 'Safe') safeLocations++;
             else if (loc.status === 'Warning') warningLocations++;
             else if (loc.status === 'Danger') dangerLocations++;
+            else if (loc.status === 'SENSOR FAULT') faultLocations++;
         });
 
         // Overall status breakdown count
         const safeCountRes = db.get("SELECT COUNT(*) AS count FROM readings WHERE status = 'Safe'");
         const warningCountRes = db.get("SELECT COUNT(*) AS count FROM readings WHERE status = 'Warning'");
         const dangerCountRes = db.get("SELECT COUNT(*) AS count FROM readings WHERE status = 'Danger'");
+        const faultCountRes = db.get("SELECT COUNT(*) AS count FROM readings WHERE status = 'SENSOR FAULT'");
 
-        // 3. Latest Water Level Reading
-        const latestReading = db.get("SELECT * FROM readings ORDER BY recorded_time DESC, id DESC LIMIT 1");
+        // 3. Latest Water Level Reading (filtering out broken sensor faults for clean gauge reading)
+        const latestReading = db.get("SELECT * FROM readings WHERE status != 'SENSOR FAULT' ORDER BY recorded_time DESC, id DESC LIMIT 1");
 
-        // 4. Statistics (Highest, Lowest, Average Level)
+        // 4. Statistics (Highest, Lowest, Average Level) - Excluding SENSOR FAULT readings to avoid statistical corruption!
         const statsRes = db.get(`
             SELECT 
                 MAX(water_level) AS max_level,
                 MIN(water_level) AS min_level,
                 AVG(water_level) AS avg_level
             FROM readings
+            WHERE status != 'SENSOR FAULT'
         `);
 
-        // 5. Water Level Trend Data (Chronological 15 latest readings or all)
+        // 5. Water Level Trend Data (Chronological readings excluding impossible values for smooth line graph)
         const trendReadings = db.all(`
             SELECT id, reading_id, device_id, location, water_level, status, recorded_time 
             FROM readings 
+            WHERE status != 'SENSOR FAULT'
             ORDER BY recorded_time ASC 
             LIMIT 30
         `);
 
-        // 6. Active Alerts (Warning and Danger readings)
+        // 6. Active Alerts (Warning and Danger readings for flood response)
         const activeAlerts = db.all(`
             SELECT * FROM readings 
             WHERE status IN ('Warning', 'Danger') 
+            ORDER BY recorded_time DESC
+        `);
+
+        // 7. Change 2: Sensor Hardware Faults (Impossible readings out of valid range 0-15m)
+        const activeFaults = db.all(`
+            SELECT * FROM readings 
+            WHERE status = 'SENSOR FAULT' 
             ORDER BY recorded_time DESC
         `);
 
@@ -69,6 +81,7 @@ const getDashboardData = async (req, res) => {
                 safeLocations,
                 warningLocations,
                 dangerLocations,
+                faultLocations,
                 latestWaterLevel: latestReading ? latestReading.water_level : 0,
                 latestLocation: latestReading ? latestReading.location : 'N/A',
                 latestReadingId: latestReading ? latestReading.reading_id : 'N/A',
@@ -77,7 +90,8 @@ const getDashboardData = async (req, res) => {
             statusDistribution: {
                 safe: safeCountRes ? safeCountRes.count : 0,
                 warning: warningCountRes ? warningCountRes.count : 0,
-                danger: dangerCountRes ? dangerCountRes.count : 0
+                danger: dangerCountRes ? dangerCountRes.count : 0,
+                fault: faultCountRes ? faultCountRes.count : 0
             },
             statistics: {
                 highestLevel: statsRes ? (Math.round(statsRes.max_level * 100) / 100) : 0,
@@ -85,7 +99,8 @@ const getDashboardData = async (req, res) => {
                 averageLevel: statsRes ? (Math.round(statsRes.avg_level * 100) / 100) : 0
             },
             trendData: trendReadings,
-            alerts: activeAlerts
+            alerts: activeAlerts,
+            faults: activeFaults
         });
     } catch (err) {
         console.error('Error fetching dashboard metrics:', err);

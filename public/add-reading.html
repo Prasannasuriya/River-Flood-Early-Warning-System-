@@ -90,11 +90,14 @@
                 <!-- Real-time Status Threshold Preview Meter -->
                 <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1.25rem; margin: 1rem 0 1.5rem 0;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">AUTOMATED THRESHOLD PREVIEW</span>
+                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">STATUS &amp; COMPUTED DELTA PREVIEW</span>
+                            <span class="delta-tag" id="computed-delta-display">Δ --</span>
+                        </div>
                         <div id="status-preview-badge" class="badge badge-safe">Enter Level</div>
                     </div>
                     <div id="status-preview-desc" style="font-size: 0.85rem; color: var(--text-muted);">
-                        Enter a valid water level in meters to preview threshold status (Safe <= 2.5m, Warning 2.5-4.5m, Danger > 4.5m).
+                        Enter a valid water level in meters to preview threshold status (Safe <= 2.5m, Warning 2.5-4.5m, Danger > 4.5m, Impossible > 15m).
                     </div>
                 </div>
 

@@ -1,4 +1,4 @@
-// Dashboard View Logic with Chart.js Integration
+// Dashboard View Logic with SIH 2026 Level 2 (Change 1 Computed Delta & Change 2 Fault Handling)
 document.addEventListener('DOMContentLoaded', () => {
     loadDashboard();
 });
@@ -19,6 +19,10 @@ async function loadDashboard() {
         document.getElementById('stat-safe').textContent = summary.safeLocations;
         document.getElementById('stat-warning').textContent = summary.warningLocations;
         document.getElementById('stat-danger').textContent = summary.dangerLocations;
+        
+        const faultEl = document.getElementById('stat-fault');
+        if (faultEl) faultEl.textContent = summary.faultLocations || 0;
+
         document.getElementById('stat-latest-level').textContent = `${summary.latestWaterLevel} m`;
         document.getElementById('stat-latest-location').textContent = `Station: ${summary.latestLocation}`;
         document.getElementById('stat-updated').textContent = formatTime(summary.lastUpdatedTime);
@@ -49,12 +53,20 @@ function renderRecentTable(readings) {
         let badgeClass = 'badge-safe';
         if (r.status === 'Warning') badgeClass = 'badge-warning';
         if (r.status === 'Danger') badgeClass = 'badge-danger';
+        if (r.status === 'SENSOR FAULT') badgeClass = 'badge-fault';
+
+        // Change 1: Display computed baseline delta (e.g. Δ +1.30m)
+        const diff = (parseFloat(r.water_level) - 2.50);
+        const formattedDelta = diff >= 0 ? `+${diff.toFixed(2)}m` : `${diff.toFixed(2)}m`;
 
         return `
             <tr>
                 <td><strong>${escapeHTML(r.reading_id)}</strong></td>
                 <td>${escapeHTML(r.location)}</td>
-                <td><strong>${r.water_level} m</strong></td>
+                <td>
+                    <strong>${r.water_level} m</strong> 
+                    <span class="delta-tag" title="Change 1: Internal computed difference from 2.5m safe baseline">Δ ${formattedDelta}</span>
+                </td>
                 <td><span class="badge ${badgeClass}">${r.status}</span></td>
                 <td>${formatTime(r.recorded_time)}</td>
             </tr>
@@ -66,8 +78,11 @@ function initTrendChart(trendData) {
     const ctx = document.getElementById('trendLineChart');
     if (!ctx) return;
 
-    const labels = trendData.map(d => formatShortTime(d.recorded_time));
-    const levels = trendData.map(d => d.water_level);
+    // Filter out impossible sensor faults from trend line graph
+    const validData = trendData.filter(d => d.status !== 'SENSOR FAULT');
+
+    const labels = validData.map(d => formatShortTime(d.recorded_time));
+    const levels = validData.map(d => d.water_level);
 
     if (trendChart) trendChart.destroy();
 
@@ -83,10 +98,10 @@ function initTrendChart(trendData) {
                 fill: true,
                 tension: 0.35,
                 borderWidth: 3,
-                pointBackgroundColor: trendData.map(d => {
+                pointBackgroundColor: validData.map(d => {
                     if (d.status === 'Danger') return '#ef4444';
                     if (d.status === 'Warning') return '#f59e0b';
-                    return '#22c55e';
+                    return '#10b981';
                 }),
                 pointRadius: 5,
                 pointHoverRadius: 7
@@ -103,8 +118,9 @@ function initTrendChart(trendData) {
                     callbacks: {
                         afterBody: function(items) {
                             const idx = items[0].dataIndex;
-                            const item = trendData[idx];
-                            return `Location: ${item.location}\nStatus: ${item.status}`;
+                            const item = validData[idx];
+                            const diff = (item.water_level - 2.50).toFixed(2);
+                            return `Location: ${item.location}\nStatus: ${item.status}\nBaseline Delta (Change 1): ${diff >= 0 ? '+' : ''}${diff}m`;
                         }
                     }
                 }
@@ -133,10 +149,10 @@ function initStatusPieChart(dist) {
     statusPieChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Safe (0-2.5m)', 'Warning (2.5-4.5m)', 'Danger (>4.5m)'],
+            labels: ['Safe (0-2.5m)', 'Warning (2.5-4.5m)', 'Danger (>4.5m)', 'Sensor Faults (Out of bounds)'],
             datasets: [{
-                data: [dist.safe, dist.warning, dist.danger],
-                backgroundColor: ['#22c55e', '#f59e0b', '#ef4444'],
+                data: [dist.safe, dist.warning, dist.danger, dist.fault || 0],
+                backgroundColor: ['#10b981', '#f59e0b', '#ef4444', '#c084fc'],
                 borderColor: '#111827',
                 borderWidth: 3,
                 hoverOffset: 6
@@ -148,7 +164,7 @@ function initStatusPieChart(dist) {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: { color: '#94a3b8', padding: 15, font: { family: 'Inter' } }
+                    labels: { color: '#94a3b8', padding: 12, font: { family: 'Inter', size: 12 } }
                 }
             },
             cutout: '65%'

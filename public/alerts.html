@@ -57,7 +57,7 @@
         <!-- Threshold Reference Box -->
         <section class="glass-card" style="margin-bottom: 1.5rem; padding: 1rem 1.5rem;">
             <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; font-size: 0.88rem;">
-                <div style="font-weight: 600; color: var(--text-secondary);"><i class="fas fa-info-circle"></i> Threshold Criteria:</div>
+                <div style="font-weight: 600; color: var(--text-secondary);"><i class="fas fa-info-circle"></i> Threshold &amp; Fault Criteria:</div>
                 <div style="display: flex; align-items: center; gap: 0.4rem;">
                     <span class="badge badge-safe">SAFE</span> 0.0m - 2.5m (Normal Operations)
                 </div>
@@ -66,6 +66,9 @@
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.4rem;">
                     <span class="badge badge-danger">DANGER</span> > 4.5m (Red Emergency Alert)
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.4rem;">
+                    <span class="badge badge-fault">SENSOR FAULT</span> Out of Bounds (< 0m or > 15m)
                 </div>
             </div>
         </section>
