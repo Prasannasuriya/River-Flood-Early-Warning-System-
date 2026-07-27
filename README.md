@@ -13,6 +13,15 @@
 
 ---
 
+## 📹 SIH 2026 Working Video Demonstration
+
+Watch the official working video demonstration of the project recorded for SIH 2026 Level 2 evaluation:
+
+> 🎥 **[Watch Official Video Demo (411723104032_PRASANNASURIYA_A_D.mp4.mp4)](411723104032_PRASANNASURIYA_A_D.mp4.mp4)**  
+> *(Demonstrates real-time control room telemetry dashboard, live water level input submission, Change 1 computed baseline delta `Δ Baseline` dynamic updating, Change 2 impossible sensor fault safeguard handling, and active flood alert cards)*
+
+---
+
 ## 🏆 SIH 2026 Level 2 — On-Spot Changes Implementation
 
 ### 🔹 Change 1 — (8 Marks) Internal Computed Value Display
@@ -72,6 +81,53 @@ Open your web browser at **`http://localhost:5000`**.
 
 - **Username**: `admin`
 - **Password**: `admin123`
+
+---
+
+## 📁 Project Architecture
+
+```text
+River-Flood-Early-Warning-System/
+├── 411723104032_PRASANNASURIYA_A_D.mp4.mp4  # Official working video demonstration
+├── database/
+│   ├── schema.sql           # Database schema & index definitions
+│   ├── seed.sql             # 40 realistic seed records + 1 sensor fault record
+│   ├── db.js                # SQLite connection, auto-migration & persistence
+│   └── flood_system.db      # SQLite database file
+├── server/
+│   ├── controllers/
+│   │   ├── authController.js      # Admin authentication handler
+│   │   ├── readingController.js   # Telemetry CRUD & threshold calculations
+│   │   └── dashboardController.js # Aggregated statistics & chart data
+│   ├── routes/
+│   │   ├── authRoutes.js         # /api/auth routes
+│   │   ├── readingRoutes.js      # /api/readings routes
+│   │   └── dashboardRoutes.js    # /api/dashboard routes
+│   ├── middleware/
+│   │   └── errorHandler.js       # Centralized error handler & 404 router
+│   └── app.js                    # Express application entrypoint
+├── public/                       # Static frontend client assets
+│   ├── assets/
+│   │   ├── css/
+│   │   │   └── styles.css        # Glassmorphism design tokens & styles
+│   │   └── js/
+│   │       ├── api.js            # REST API client module
+│   │       ├── auth.js           # Admin session & navigation manager
+│   │       ├── toast.js          # Toast notification alerts
+│   │       ├── dashboard.js      # Dashboard visual analytics controller
+│   │       ├── readings.js       # Readings data table, search & filter
+│   │       ├── add-reading.js    # Form validation & live preview meter
+│   │       ├── trend.js          # Hydrological line graph & statistics
+│   │       └── alerts.js         # Dynamic warning & emergency cards engine
+│   ├── index.html                # Executive Dashboard view
+│   ├── login.html                # Admin Login view
+│   ├── add-reading.html          # Add Water Level view
+│   ├── readings.html             # Reading List Table view
+│   ├── trend.html                # Water Trend view
+│   └── alerts.html               # Emergency Alerts view
+├── package.json
+└── README.md
+```
 
 ---
 
